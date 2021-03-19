@@ -21,6 +21,8 @@ pygame.mixer.music.load('music.ogg')
 sound_settle = pygame.mixer.Sound('settle.ogg')
 sound_clear = pygame.mixer.Sound('clear.ogg')
 sound_lose = pygame.mixer.Sound('lose.ogg')
+sound_rotate = pygame.mixer.Sound('rotate.wav')
+sound_shift = pygame.mixer.Sound('shift.wav')
 # ---------------------------------------------------
 # GLOBALS VARS
 s_width = 800
@@ -158,7 +160,8 @@ class Piece(object):
 
 
 def draw_text_middle(text, size, color, surface):
-    font = pygame.font.SysFont('comicsans', size, bold=True)
+    # font = pygame.font.SysFont('comicsans', size, bold=True)
+    font = pygame.font.SysFont('SimHei', size, bold=True)    #SimHei可以显示中文
 
     label = font.render(text, 1, color)
 
@@ -356,16 +359,19 @@ def main():
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_LEFT:
+                    sound_shift.play()
                     current_piece.x -= 1
                     if not valid_space(current_piece, grid):
                         current_piece.x += 1
 
                 elif event.key == pygame.K_RIGHT:
+                    sound_shift.play()
                     current_piece.x += 1
                     if not valid_space(current_piece, grid):
                         current_piece.x -= 1
                 elif event.key == pygame.K_UP:
                     # rotate shape
+                    sound_rotate.play()
                     current_piece.rotation = current_piece.rotation + \
                         1 % len(current_piece.shape)
                     if not valid_space(current_piece, grid):
@@ -432,7 +438,7 @@ def main_menu():
     run = True
     while run:
         win.fill((0, 0, 0))
-        draw_text_middle('Press any key to begin.', 60, (255, 255, 255), win)
+        draw_text_middle('Press any key to begin.', 48, (255, 255, 255), win)
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
